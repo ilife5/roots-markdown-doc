@@ -1,0 +1,20 @@
+{
+  "name": "roots-markdown-jade",
+  "version": "1.0.0",
+  "description": "roots extension for generating doc use markdown.",
+  "main": "lib",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "roots-extension"
+  ],
+  "dependencies": {
+    "minimatch": "2.x",
+    "lodash": "2.x",
+    "jade": "1.x",
+    "marked": "0.3.x"
+  },
+  "author": "ilife5",
+  "license": "ISC"
+}
