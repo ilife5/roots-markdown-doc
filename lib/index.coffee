@@ -4,8 +4,6 @@ _           = require "lodash"
 fs          = require "fs"
 minimatch   = require("minimatch")
 
-
-
 module.exports = (opts) ->
 
   opts = _.defaults opts,
@@ -37,7 +35,7 @@ module.exports = (opts) ->
       write: (ctx) =>
         if @layout
           content = @md_content.replace(/([^\n]+)/g, @layout.indent + @indent + "$1")
-          content = @layout.layout.substring(0, @layout.index + 1) + @layout.indent + ":markdown\n" + content + @layout.layout.substring(@layout.index + 1)
+          content = @layout.layout.substring(0, @layout.index) + @layout.indent + ":markdown\n" + content + @layout.layout.substring(@layout.index)
           fn = jade.compile content, @opts
           path: path.join(ctx.roots.config.output_path(), "..", ctx.file_options._path),
           content: fn()
@@ -48,6 +46,6 @@ module.exports = (opts) ->
       if regResult
         layout: layout.replace(regResult[1], "")
         indent: regResult[2]
-        index : regResult.index
+        index : regResult.index + 1
 
 
