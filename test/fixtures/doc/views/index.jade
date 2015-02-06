@@ -1,19 +1,16 @@
-doctype html
-html
+extends ../template/_layout
 
-  head
-    meta(charset='utf8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge, chrome=1')
-    meta(name='description', content='description of your site')
-    meta(name='author', content= "author of the site")
-    //- uncomment if your site is responsive!
-    //- meta(name="viewport" content="width=device-width, initial-scale=1")
-    title= _path
-    != css()
-
-  body
-    a(href="docs/elves.html") elves
-    br
-    a(href="docs/elves_zh.html") elves_zh
-
-    != js()
+block content
+    a(href="http://github.com/ilife5/elves", id="logo")
+        img(src="https://raw.githubusercontent.com/ilife5/life/master/statics/images/elf.jpg")
+    h1 These are the docs you're looking for
+    div.toc
+        each val, key in catalog
+            section(id=key)
+                h2(title=key)
+                    = key
+                ul.pageColumns
+                    each post in val
+                        li
+                            a(href=post.path)
+                                != post.name

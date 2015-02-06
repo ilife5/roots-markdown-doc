@@ -1,5 +1,17 @@
 extends /template/_layout
 
 block content
-    //- If you are using makedown-jade to append markdown. Add comments like the following line.
-    //- {{markdown}}
+    nav
+        each val, key in catalog
+            section.active(id=key)
+                h2(title=key)
+                    a key
+                div.pages
+                    each post in val
+                        a(href=post.path)
+                            != post.name
+    div.container
+        div#page
+            //- If you are using makedown-jade to append markdown. Add comments like the following line.
+            //- {{markdown}}
+

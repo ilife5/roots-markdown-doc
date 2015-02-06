@@ -13,7 +13,9 @@
     "minimatch": "2.x",
     "lodash": "2.x",
     "jade": "1.x",
-    "marked": "0.3.x"
+    "marked": "0.3.x",
+    "dynamic-content": "0.2.x",
+    "glob": "4.3.x"
   },
   "author": "ilife5",
   "license": "ISC"
