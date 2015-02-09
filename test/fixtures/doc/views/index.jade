@@ -5,12 +5,7 @@ block content
         img(src="https://raw.githubusercontent.com/ilife5/life/master/statics/images/elf.jpg")
     h1 These are the docs you're looking for
     div.toc
-        each val, key in catalog
-            section(id=key)
-                h2(title=key)
-                    = key
-                ul.pageColumns
-                    each post in val
-                        li
-                            a(href=post.path)
-                                != post.name
+        each val, index in catalog.seq
+            section(id=val.display)
+                h2(title=val.display)
+                    = val.display
