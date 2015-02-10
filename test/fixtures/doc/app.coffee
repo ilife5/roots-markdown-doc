@@ -9,7 +9,7 @@ dynamic_content = require 'dynamic-content'
 
 
 module.exports =
-  ignores: ['readme.md', '**/layout.*', '**/_*', '.gitignore', 'ship.*conf', 'template/**']
+  ignores: ['readme.md', '**/layout.*', '**/_*', '.gitignore', 'ship.*conf', 'template/**', 'package.json']
 
   extensions: [
     dynamic_content(),

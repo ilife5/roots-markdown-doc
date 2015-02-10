@@ -166,5 +166,4 @@ module.exports = (opts) ->
               _current = _current[_catalog]
 
       seq_literate(catalog)
-      console.log(catalog)
       catalog

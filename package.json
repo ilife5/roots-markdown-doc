@@ -1,5 +1,5 @@
 {
-  "name": "roots-markdown-doc",
+  "name": "markdown-doc",
   "version": "1.0.0",
   "description": "roots extension for generating doc use markdown.",
   "main": "lib",
