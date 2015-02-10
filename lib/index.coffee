@@ -89,11 +89,11 @@ module.exports = (opts) ->
         obj.seq = seq_sort obj.seq
 
     seq_sort= (seq) ->
-      seqSuffix = /_\[(\d+)\]/
+      seqPreffix = /\[(\d+)\]_/
 
       _.map seq, (val, index) ->
 
-        result = val.match seqSuffix
+        result = val.match seqPreffix
         order = null
 
         if result
@@ -114,7 +114,7 @@ module.exports = (opts) ->
           return a.index - b.index
 
       .map (val) ->
-        display: val.name.replace(seqSuffix, "")
+        display: val.name.replace(seqPreffix, "")
         path: val.name
 
     catalog_generator= (files)->
@@ -133,7 +133,7 @@ module.exports = (opts) ->
           catalog[_catalog].seq ?= ["default"]
           _current = catalog
 
-          if file.indexOf(defaultSuffix) > -1
+          if !catalog[_catalog].defaultPage or file.indexOf(defaultSuffix) > -1
             catalog[_catalog].defaultPage = "/" + _path
 
           while _catalogs.length > 1

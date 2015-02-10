@@ -1,11 +1,12 @@
 {
   "name": "markdown-doc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "roots extension for generating doc use markdown.",
   "main": "lib",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": "https://github.com/ilife5/roots-markdown-doc.git",
   "keywords": [
     "roots-extension"
   ],
