@@ -8,8 +8,8 @@ glob        = require("glob")
 module.exports = (opts) ->
 
   opts = _.defaults opts,
-    files: ['docs/**/*.md']
-    opts: {}
+    files: 'docs/**/*.md'
+    jade: {}
     indent: "  "
     placeholder: "//- {{markdown}}"
 
@@ -19,16 +19,16 @@ module.exports = (opts) ->
     constructor: (@roots) ->
       @category                       = "markdown"
       @layout                         = layout_generate(fs.readFileSync(path.join(@roots.root, opts.layout), "utf-8"))
-      @files                          = opts.files
+      @files                          = Array.prototype.concat(opts.files)
       @indent                         = opts.indent
-      @opts                           = opts.opts
+      @jade                           = opts.jade
       @roots.config.locals            ?= {}
       @roots.config.locals.catalog    = {}
       @roots.config.locals.subcatalog = {}
-      @catalog                        = catalog_generator(opts.files)
+      @catalog                        = catalog_generator(@files)
 
-      if !@opts.basedir
-        @opts.basedir = @roots.root
+      if !@jade.basedir
+        @jade.basedir = @roots.root
 
     fs: ->
       extract: true
@@ -68,7 +68,7 @@ module.exports = (opts) ->
       if @layout
         content = @md_content.replace(/([^\n]+)/g, @layout.indent + @indent + "$1")
         content = @layout.layout.substring(0, @layout.index) + @layout.indent + ":markdown\n" + content + @layout.layout.substring(@layout.index)
-        fn = jade.compile content, @opts
+        fn = jade.compile content, @jade
         path: path.join(ctx.roots.root, ctx.file_options._path)
         content: fn(ctx.roots.config.locals)
       else
@@ -166,4 +166,5 @@ module.exports = (opts) ->
               _current = _current[_catalog]
 
       seq_literate(catalog)
+      console.log(catalog)
       catalog
