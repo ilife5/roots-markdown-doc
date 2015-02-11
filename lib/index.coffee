@@ -75,7 +75,7 @@ module.exports = (opts) ->
         true
 
     get_catalog= (_path) ->
-      _path.split(path.sep)[2]
+      path.normalize(_path).split(path.sep)[2]
 
     seq_literate= (obj) ->
       if !obj.seq
@@ -125,7 +125,7 @@ module.exports = (opts) ->
       _.each Array.prototype.concat(files), (pattern) ->
         _.each glob.sync(pattern), (file) ->
           _name = path.basename file, ".md"
-          _path = file.replace ".md", ".html"
+          _path = path.normalize(file.replace ".md", ".html")
           _catalogs = _path.split(path.sep).slice(1)
           _len = _catalogs.length
           _catalog = _catalogs[0]
