@@ -4,16 +4,18 @@ block content
     nav
         each val, index in subcatalog.seq
             section.active(id=val.display)
-                if val.path != "default"
-                    h2(title=val.display)
+                h2(title=val.display)
+                    if subcatalog[val.name].seq
                         a
                             = val.display
-                else
-                    h2
-                div.pages
-                    each seq, index in subcatalog[val.path].seq
-                        a(href=subcatalog[val.path].files[seq.path].path)
-                            != seq.display
+                    else
+                        a(href=subcatalog[val.name])
+                            = val.display
+                if subcatalog[val.name].seq
+                    div.pages
+                        each seq, index in subcatalog[val.name].seq
+                            a(href=subcatalog[val.name][seq.name])
+                                != seq.display
     div.container
         div#page
             //- If you are using makedown-jade to append markdown. Add comments like the following line.

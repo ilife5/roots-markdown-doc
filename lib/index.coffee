@@ -115,54 +115,37 @@ module.exports = (opts) ->
 
       .map (val) ->
         display: val.name.replace(seqPreffix, "")
-        path: val.name
+        name: val.name
 
     catalog_generator= (files)->
 
-      catalog = {}
+      catalog =
+        seq: []
       defaultSuffix = "_DEFAULT"
 
       _.each Array.prototype.concat(files), (pattern) ->
         _.each glob.sync(pattern), (file) ->
+
           _name = path.basename file, ".md"
           _path = path.normalize(file.replace ".md", ".html")
           _catalogs = _path.split(path.sep).slice(1)
-          _len = _catalogs.length
-          _catalog = _catalogs[0]
-          catalog[_catalog] ?= {}
-          catalog[_catalog].seq ?= ["default"]
           _current = catalog
-
-          if !catalog[_catalog].defaultPage or file.indexOf(defaultSuffix) > -1
-            catalog[_catalog].defaultPage = "/" + _path
 
           while _catalogs.length > 1
             _catalog = _catalogs.shift()
-            _current.seq ?= []
-            _current.seq = _.union(_current.seq, [_catalog])
-            _name = _name.replace(defaultSuffix, "")
+            _current.seq = _.union _current.seq, [_catalog]
+            _current[_catalog] ?= {}
+            _current[_catalog].seq ?= []
+
+            if _name.match(defaultSuffix) or !_current[_catalog].defaultPage
+              _current[_catalog].defaultPage = "/" + _path
+
+            _name = _name.replace defaultSuffix, ""
 
             if _catalogs.length is 1
-
-              if _len is 2
-                _current[_catalog].default ?=
-                  seq: []
-                  files: {}
-                _current = _current[_catalog].default
-              else
-                _current[_catalog] ?=
-                  seq: []
-                  files: {}
-                _current = _current[_catalog]
-
-              _current.seq.push _name
-
-              _current.files[_name] =
-                path: "/" + _path
-                catalogs: _path.split(path.sep).slice(1)
-                name: _name
+              _current[_catalog].seq.push _name
+              _current[_catalog][_name] = "/" + _path
             else
-              _current[_catalog] ?= {}
               _current = _current[_catalog]
 
       seq_literate(catalog)

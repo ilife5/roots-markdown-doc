@@ -1,5 +1,5 @@
 header
     a#www-link(href="/") Qunar docs
     each val, index in catalog.seq
-        a.menu(href=catalog[val.path].defaultPage)
+        a.menu(href=catalog[val.name].defaultPage)
             = val.display
