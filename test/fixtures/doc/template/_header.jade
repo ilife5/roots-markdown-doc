@@ -2,8 +2,16 @@ header
     a#www-link(href="/") Qunar docs
     each val, index in catalog.seq
         if catalog[val.name].seq
-            a.menu(href=catalog[val.name].defaultPage)
-                = val.display
+            if _catalog == val.name
+                a.active.menu(href=catalog[val.name].defaultPage)
+                    = val.display
+            else
+                a.menu(href=catalog[val.name].defaultPage)
+                    = val.display
         else
-            a.menu(href=catalog[val.name].defaultPage, target="_blank")
-                = val.display
+            if _catalog == val.name
+                a.active.menu(href=catalog[val.name].defaultPage, target="_blank")
+                    = val.display
+            else
+                a.menu(href=catalog[val.name].defaultPage, , target="_blank")
+                    = val.display

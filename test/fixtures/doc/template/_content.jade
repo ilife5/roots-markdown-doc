@@ -35,6 +35,8 @@ block content
         container && jwplayer('js-video').setup({
             flashplayer: "/flash/jwplayer.flash.swf",
             file: container.getAttribute("data-url"),
-            image: container.getAttribute("data-image")
+            image: container.getAttribute("data-image"),
+            width: 480,
+            height: 360
         });
 

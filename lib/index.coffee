@@ -60,6 +60,7 @@ module.exports = (opts) ->
     before_hook= (ctx) ->
       @roots.config.locals.catalog = @catalog
       @roots.config.locals.subcatalog = _.defaults {}, @catalog[get_catalog(ctx.file_options._path)]
+      @roots.config.locals._catalog = get_catalog(ctx.file_options._path)
       @roots.config.locals.title = path.basename(ctx.file_options._path, ".html" ).replace(defaultSuffix, "")
       delete @roots.config.locals.subcatalog.defaultPage
       @md_content = ctx.content
