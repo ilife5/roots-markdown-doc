@@ -11,6 +11,7 @@ module.exports = (opts) ->
     files: 'docs/**/*.md'
     jade: {}
     indent: "  "
+    logo: "logo.png"
     placeholder: "//- {{markdown}}"
 
   placeholderReg = new RegExp("\\n(([^\\n]*)" + opts.placeholder + ")")
@@ -77,6 +78,14 @@ module.exports = (opts) ->
     get_catalog= (_path) ->
       path.normalize(_path).split(path.sep)[2]
 
+    logo_get= (_path) ->
+      _logo = null
+      _.each Array.prototype.concat(opts.logo), (logo) ->
+        _logo = glob.sync(path.join(_path, logo))[0]
+        if _logo
+          false
+      _logo
+
     seq_literate= (obj) ->
       if !obj.seq
         return
@@ -129,13 +138,17 @@ module.exports = (opts) ->
           _name = path.basename file, ".md"
           _path = path.normalize(file.replace ".md", ".html")
           _catalogs = _path.split(path.sep).slice(1)
+          _parentsPath = _path.split(path.sep)[0]
           _current = catalog
 
           while _catalogs.length > 1
             _catalog = _catalogs.shift()
+            _parentsPath += "/" + _catalog
             _current.seq = _.union _current.seq, [_catalog]
             _current[_catalog] ?= {}
             _current[_catalog].seq ?= []
+            if logo_get(_parentsPath)
+              _current[_catalog].logo = "/" + logo_get(_parentsPath)
 
             if _name.match(defaultSuffix) or !_current[_catalog].defaultPage
               _current[_catalog].defaultPage = "/" + _path
