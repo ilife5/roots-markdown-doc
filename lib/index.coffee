@@ -66,7 +66,7 @@ module.exports = (opts) ->
      * generate content use jade and write
     ###
     write_hook= (ctx) ->
-      if @layout
+      if @layout and path.normalize(ctx.file_options._path).split(path.sep).length > 3
         content = @md_content.replace(/([^\n]+)/g, @layout.indent + @indent + "$1")
         content = @layout.layout.substring(0, @layout.index) + @layout.indent + ":markdown\n" + content + @layout.layout.substring(@layout.index)
         fn = jade.compile content, @jade
@@ -81,7 +81,7 @@ module.exports = (opts) ->
     logo_get= (_path) ->
       _logo = null
       _.each Array.prototype.concat(opts.logo), (logo) ->
-        _logo = glob.sync(path.join(_path, logo))[0]
+        _logo = glob.sync(path.join(_path, logo).replace(/(\[|\])/g, "\\$1"))[0]
         if _logo
           false
       _logo
@@ -140,6 +140,15 @@ module.exports = (opts) ->
           _catalogs = _path.split(path.sep).slice(1)
           _parentsPath = _path.split(path.sep)[0]
           _current = catalog
+
+          ### catalog ###
+          if _catalogs.length is 1
+            _catalog = _name.match(/([^(]+)\((.+)\)/)
+            _name = _catalog[1]
+            _current.seq.push _name
+            _current[_name.replace defaultSuffix, ""] =
+              defaultPage: "http://" + _catalog[2]
+
 
           while _catalogs.length > 1
             _catalog = _catalogs.shift()
