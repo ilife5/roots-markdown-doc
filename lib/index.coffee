@@ -26,7 +26,7 @@ module.exports = (opts) ->
       @roots.config.locals            ?= {}
       @roots.config.locals.catalog    = {}
       @roots.config.locals.subcatalog = {}
-      @catalog                        = catalog_generator(@files)
+      @catalog                        = catalog_generator(@files, @roots.root)
 
       if !@jade.basedir
         @jade.basedir = @roots.root
@@ -126,7 +126,7 @@ module.exports = (opts) ->
         display: val.name.replace(seqPreffix, "")
         name: val.name
 
-    catalog_generator= (files)->
+    catalog_generator= (files, root)->
 
       catalog =
         seq: []
@@ -143,11 +143,10 @@ module.exports = (opts) ->
 
           ### catalog ###
           if _catalogs.length is 1
-            _catalog = _name.match(/([^(]+)\((.+)\)/)
-            _name = _catalog[1]
+            _catalog = _name.replace defaultSuffix, ""
             _current.seq.push _name
-            _current[_name.replace defaultSuffix, ""] =
-              defaultPage: "http://" + _catalog[2]
+            _current[_catalog] =
+              defaultPage: fs.readFileSync( path.join(root, file), "utf-8" )
 
 
           while _catalogs.length > 1

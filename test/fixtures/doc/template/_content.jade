@@ -4,7 +4,7 @@ block content
     nav
         if subcatalog.logo
             section
-                img(src=subcatalog.logo width='180' height='150').
+                img(src=subcatalog.logo width='180' height='150')
         each val, index in subcatalog.seq
             section.active(id=val.display)
                 h2(title=val.display)
