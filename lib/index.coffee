@@ -15,6 +15,7 @@ module.exports = (opts) ->
     placeholder: "//- {{markdown}}"
 
   placeholderReg = new RegExp("\\n(([^\\n]*)" + opts.placeholder + ")")
+  defaultSuffix = "_DEFAULT"
 
   class MarkdownConversion
     constructor: (@roots) ->
@@ -59,6 +60,7 @@ module.exports = (opts) ->
     before_hook= (ctx) ->
       @roots.config.locals.catalog = @catalog
       @roots.config.locals.subcatalog = _.defaults {}, @catalog[get_catalog(ctx.file_options._path)]
+      @roots.config.locals.title = path.basename(ctx.file_options._path, ".html" ).replace(defaultSuffix, "")
       delete @roots.config.locals.subcatalog.defaultPage
       @md_content = ctx.content
 
@@ -81,9 +83,12 @@ module.exports = (opts) ->
     logo_get= (_path) ->
       _logo = null
       _.each Array.prototype.concat(opts.logo), (logo) ->
-        _logo = glob.sync(path.join(_path, logo).replace(/(\[|\])/g, "\\$1"))[0]
+        _logo = glob.sync(logo, {
+          cwd: _path
+        })[0]
         if _logo
           false
+
       _logo
 
     seq_literate= (obj) ->
@@ -130,7 +135,6 @@ module.exports = (opts) ->
 
       catalog =
         seq: []
-      defaultSuffix = "_DEFAULT"
 
       _.each Array.prototype.concat(files), (pattern) ->
         _.each glob.sync(pattern), (file) ->
@@ -155,8 +159,8 @@ module.exports = (opts) ->
             _current.seq = _.union _current.seq, [_catalog]
             _current[_catalog] ?= {}
             _current[_catalog].seq ?= []
-            if logo_get(_parentsPath)
-              _current[_catalog].logo = "/" + logo_get(_parentsPath)
+            if _logo = logo_get(path.join root, _parentsPath)
+              _current[_catalog].logo = "/" + path.join(_parentsPath, _logo)
 
             if _name.match(defaultSuffix) or !_current[_catalog].defaultPage
               _current[_catalog].defaultPage = "/" + _path

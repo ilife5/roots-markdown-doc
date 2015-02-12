@@ -17,8 +17,12 @@ block content
                 if subcatalog[val.name].seq
                     div.pages
                         each seq, index in subcatalog[val.name].seq
-                            a(href=subcatalog[val.name][seq.name])
-                                != seq.display
+                            if seq.name == title
+                                a.active(href=subcatalog[val.name][seq.name])
+                                    != seq.display
+                            else
+                                a(href=subcatalog[val.name][seq.name])
+                                    != seq.display
     div.container
         div#page
             //- If you are using makedown-jade to append markdown. Add comments like the following line.

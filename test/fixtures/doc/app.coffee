@@ -17,7 +17,7 @@ module.exports =
     css_pipeline(files: ['assets/css/*.styl', 'assets/css/theme/*.css'], out: "/index.css", minify: true),
     markdown(layout: 'template/_content.jade', jade: {
       pretty: true
-    }, logo: "logo.jpg")
+    }, logo: "logo.png")
   ]
 
   stylus:
